@@ -1,0 +1,67 @@
+{
+    "name": "node-api-template",
+    "version": "1.0.0",
+    "description": "NodeJS JWT Authentication API",
+    "license": "MIT",
+    "main": "./serverApp.js",
+    "node-main": "./serverApp.js",
+    "single-instance": "false",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cornflourblue/node-api-template.git"
+    },
+    "scripts": {
+       
+        "start": "node ./serverApp.js",
+        "start:dev": "nodemon ./serverApp.js"
+    },
+    "dependencies": {
+        "adm-zip": "^0.5.16",
+        "axios": "^0.26.1",
+        "body-parser": "^1.20.0",
+        "connect-multiparty": "^2.2.0",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "crypto-js": "^4.1.1",
+        "ddos": "^0.2.1",
+        "dotenv": "^16.0.1",
+        "exceljs": "^4.4.0",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.2.0",
+        "express-jwt": "^6.0.0",
+        "express-rate-limit": "^6.5.1",
+        "file-extension": "^4.0.5",
+        "file-saver": "^2.0.5",
+        "fs": "^0.0.1-security",
+        "geofencer": "^1.0.2",
+        "helmet": "^5.1.1",
+        "https": "^1.0.0",
+        "jimp": "^0.16.0",
+        "jsonwebtoken": "^8.5.1",
+        "ldap-authentication": "^2.2.9",
+        "mssql": "^6.2.0",
+        "multer": "^1.4.4",
+        "os": "^0.1.2",
+        "qs": "^6.12.1",
+        "read-excel-file": "^5.8.3",
+        "request-ip": "^2.2.0",
+        "rootpath": "^0.1.2",
+        "slim-xlsx": "github:sundagy/slim-xlsx",
+        "socket.io": "^2.3.0",
+        "svg-captcha": "^1.4.0",
+        "xlsx": "^0.18.5"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    },
+    "webkit": {
+        "plugin": true
+    },
+    "maintainers": [
+        {
+            "name": "Safari",
+            "email": "safari@gmail.com",
+            "web": "http://www.ikd.ir"
+        }
+    ]
+}

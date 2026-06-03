@@ -1,0 +1,6 @@
+{
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.foldingImportsByDefault": true,
+    "markdown.updateLinksOnFileMove.enabled": "prompt"
+}
