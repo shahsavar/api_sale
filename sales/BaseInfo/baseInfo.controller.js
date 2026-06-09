@@ -18,8 +18,10 @@ router.post('/getTafsiliPickList', auth ,getTafsiliPickList);
 router.post('/factorHazineInsert', auth ,factorHazineInsert);
 router.post('/factorHazineUpdate', auth ,factorHazineUpdate);
 router.post('/factorHazineDelete', auth ,factorHazineDelete);
-
-
+router.post('/getMarketList', auth ,getMarketList);
+router.post('/marketInsert', auth ,marketInsert);
+router.post('/marketUpdate', auth ,marketUpdate);
+router.post('/marketDelete', auth ,marketDelete);
 
 
 module.exports = router;
@@ -110,6 +112,33 @@ function factorHazineUpdate(req, res, next) {
 
 function factorHazineDelete(req, res, next) {
     myService.factorHazineDelete(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+
+function getMarketList(req, res, next) {
+    myService.getMarketList(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+
+function marketInsert(req, res, next) {
+    myService.marketInsert(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+function marketUpdate(req, res, next) {
+    myService.marketUpdate(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+
+function marketDelete(req, res, next) {
+    myService.marketDelete(req,res.next)
     .then(data => res.json(data))
     .catch(err => next(err));
     

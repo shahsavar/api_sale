@@ -261,7 +261,7 @@ async function getResponExtraUIData(req) {
 
     const pool = await pools.getPool('Sale')
     let result = await pool.request()
-      .input('IdRespon', sql.VarChar, req.body.IdRespon)
+      .input('IdRespon', sql.Int, req.body.IdRespon)
       .execute('Sale.sale.uspGetResponExtraUIData')
     return {
       statusResult: 0,

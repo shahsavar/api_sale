@@ -17,7 +17,10 @@ module.exports = {
   factorHazineInsert,
   factorHazineUpdate,
   factorHazineDelete,
-
+  getMarketList,
+  marketInsert,
+  marketUpdate,
+  marketDelete,
 
 
 }
@@ -272,7 +275,7 @@ async function modelUpdate(req) {
   }
 }
 
-////////////////// هزینه های مبنا فاکتور - هزینه شماره گذاری
+////////////////// هزینه های مبنا فاکتور - هزینه شماره گذاری - هزینه بیمه خودرو
 
 async function getFactorHazinehList(req) {
 
@@ -479,3 +482,136 @@ async function factorHazineDelete(req) {
   }
 }
 
+///////////////// قیمت پیش فروش
+
+async function getMarketList(req) {
+
+  try {
+
+    const { IDModel} = req.body.firstParams;
+    var query = SqlCommandCreator(req.body.lazyParams, "Sale.dbo.VMarket", "*", `idModel=${IDModel}`);
+    let pool = await pools.getPool('Sale')
+    let result = await pool.request().query(query)
+
+    return {
+      statusResult: 0,
+      rows: result.recordsets[0],
+      totalRecords: result.recordsets[1][0].totalCount,
+    }
+  } catch (err) {
+    console.log("err.message", err.message)
+    throw (err)
+  }
+
+}
+
+
+async function marketInsert(req) {
+  try {
+
+
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const pool = await pools.getPool('Sale')
+    let result = await pool.request()
+
+      .input('idMarket', sql.Int, 0)
+      .input('idModel', sql.Int, req.body.idModel)
+      .input('idModelSub', sql.Int, req.body.idModelSub)
+      .input('EffectiveDate', sql.VarChar(10), req.body.EffectiveDate)
+      .input('Amount', sql.Numeric(18,0), req.body.Amount)
+      .input('AmountLeasing', sql.Numeric(18,0), req.body.AmountLeasing)
+      .input('KarmozdCheq', sql.Numeric(18,0), req.body.KarmozdCheq)
+      .input('Priority', sql.Int, req.body.Priority)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output('msgRet', sql.NVarChar(500))
+      .execute('Sale.sale.uspMarketInsert')
+    if (result.output.msgRet != "") {
+      return {
+        statusResult: 1,
+        message: result.output.msgRet
+      };
+    }
+    return {
+      statusResult: 0,
+      message: "ذخیره اطلاعات  با موفقیت انجام شد",
+    };
+  } catch (err) {
+    console.log('err.message===>', err.message)
+    throw new Error('خطا در برقراری ارتباط با پایگاه داده ای')
+  }
+}
+async function marketUpdate(req) {
+  try {
+
+
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const pool = await pools.getPool('Sale')
+    let result = await pool.request()
+
+      .input('idMarket', sql.Int, req.body.idMarket)
+      .input('idModel', sql.Int, req.body.idModel)
+      .input('idModelSub', sql.Int, req.body.idModelSub)
+      .input('EffectiveDate', sql.VarChar(10), req.body.EffectiveDate)
+      .input('Amount', sql.Numeric(18,0), req.body.Amount)
+      .input('AmountLeasing', sql.Numeric(18,0), req.body.AmountLeasing)
+      .input('KarmozdCheq', sql.Numeric(18,0), req.body.KarmozdCheq)
+      .input('Priority', sql.Int, req.body.Priority)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output('msgRet', sql.NVarChar(500))
+      .execute('Sale.sale.uspMarketUpdate')
+    if (result.output.msgRet != "") {
+      return {
+        statusResult: 1,
+        message: result.output.msgRet
+      };
+    }
+    return {
+      statusResult: 0,
+      message: "ویرایش اطلاعات  با موفقیت انجام شد",
+    };
+  } catch (err) {
+    console.log('err.message===>', err.message)
+    throw new Error('خطا در برقراری ارتباط با پایگاه داده ای')
+  }
+}
+
+async function marketDelete(req) {
+  try {
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const { idMarket } = req.body;
+    const pool = await pools.getPool('Sale');
+    let result = await pool
+      .request()
+      .input('idMarket', sql.Int, idMarket)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output("msgRet", sql.NVarChar(200))
+      .execute('Sale.sale.uspMarketDelete');
+
+    if (result.output.msgRet == "" || result.output.msgRet == null)
+      return {
+        statusResult: 0,
+        message: "حذف اطلاعات با موفقیت انجام شد",
+
+      }
+    else return {
+      statusResult: 1,
+      message: result.output.msgRet,
+    }
+  } catch (err) {
+    console.log("err.message", err.message)
+    return {
+      statusResult: 2,
+      message: "خطا در برقراری ارتباط با پایگاه داده ای",
+    };
+
+  }
+}
