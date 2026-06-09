@@ -444,7 +444,7 @@ async function verifyPostalCode(req) {
       var CityId=result.recordset[0].CityId
 
 
-      console.log('req :>> ', req.body.PostalCode);
+      // console.log('req :>> ', req.body.PostalCode);
       var res1 =  await axios.post(shahkarUrl, req.body.PostalCode.toString(), config);
 
       console.log('res1.data', res1.data)

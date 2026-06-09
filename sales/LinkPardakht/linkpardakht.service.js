@@ -489,7 +489,7 @@ async function customerCodeSelectExcel(req, res) {
 async function customerMobilSelectExcel(req, res) {
 
   try {
-    console.log('req :>> ', req.body);
+    // console.log('req :>> ', req.body);
     const pool = await pools.getPool('Sale')
     let result = await pool.request()
       .input('json', sql.VarChar, req.body.MobileNumber)
