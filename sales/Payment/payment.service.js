@@ -206,7 +206,7 @@ async function PaymentSaleInsert(req) {
             .input('Branch', sql.NVarChar(10), req.body.Branch)
             .input('RadifBank', sql.Int, req.body.RadifBank)
             .input('PreffixSerialNo', sql.NVarChar(15), req.body.PreffixSerialNo)
-            .input('DocumentNo', sql.NVarChar(10), req.body.DocumentNo)
+            .input('DocumentNo', sql.NVarChar(25), req.body.DocumentNo)
             .input('PostfixSerialNo', sql.NVarChar(10), req.body.PostfixSerialNo)
             .input('DocumentDate', sql.NVarChar(10), req.body.DocumentDate)
             .input('CalculateDate', sql.NVarChar(10), req.body.CalculateDate)
