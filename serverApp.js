@@ -34,10 +34,10 @@ app.use(errorHandler);
 
 async function startServer() {
   // ۱. اول لایسنس چک کن
- // await checkLicense();
+  await checkLicense();
 
   // ۲. نگهبان ۲۴ ساعته رو فعال کن
- // startLicenseWatcher();
+  startLicenseWatcher();
 
   // ۳. HTTPS
   // try {

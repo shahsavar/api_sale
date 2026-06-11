@@ -21,6 +21,12 @@ module.exports = {
   marketInsert,
   marketUpdate,
   marketDelete,
+  getHazinehCostList,
+  hazinehCostInsert,
+  hazinehCostUpdate,
+  hazinehCostDelete,
+  getRelatBaseUsageWithModelList,
+
 
 
 }
@@ -602,6 +608,7 @@ async function marketDelete(req) {
         message: "حذف اطلاعات با موفقیت انجام شد",
 
       }
+      
     else return {
       statusResult: 1,
       message: result.output.msgRet,
@@ -615,3 +622,178 @@ async function marketDelete(req) {
 
   }
 }
+
+/////////////// تغییرات معتبر
+
+async function getHazinehCostList(req) {
+
+  try {
+
+    const { IDModel} = req.body.firstParams;
+    var query = SqlCommandCreator(req.body.lazyParams, "Sale.dbo.VHazineCost", "*", `IdModel=${IDModel}`);
+    let pool = await pools.getPool('Sale')
+    let result = await pool.request().query(query)
+
+    return {
+      statusResult: 0,
+      rows: result.recordsets[0],
+      totalRecords: result.recordsets[1][0].totalCount,
+    }
+  } catch (err) {
+    console.log("err.message", err.message)
+    throw (err)
+  }
+
+}
+
+async function hazinehCostInsert(req) {
+  try {
+
+
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const pool = await pools.getPool('Sale')
+    let result = await pool.request()
+
+      .input('ID', sql.Int, 0)
+      .input('IDModel', sql.Int, req.body.IDModel)
+      .input('IDHazineName', sql.Int, req.body.IDHazineName)
+      .input('Amount', sql.Float, req.body.Amount)
+      .input('AccountNo', sql.VarChar(15), req.body.AccountNo)
+      .input('EffectiveDate', sql.VarChar(10), req.body.EffectiveDate)
+      .input('ExpireDate', sql.VarChar(10), req.body.ExpireDate)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output('msgRet', sql.NVarChar(500))
+      .execute('Sale.sale.uspHazineCostInsert')
+    if (result.output.msgRet != "") {
+      return {
+        statusResult: 1,
+        message: result.output.msgRet
+      };
+    }
+    return {
+      statusResult: 0,
+      message: "ذخیره اطلاعات  با موفقیت انجام شد",
+    };
+  } catch (err) {
+    console.log('err.message===>', err.message)
+    throw new Error('خطا در برقراری ارتباط با پایگاه داده ای')
+  }
+}
+async function hazinehCostUpdate(req) {
+  try {
+
+
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const pool = await pools.getPool('Sale')
+    let result = await pool.request()
+
+      .input('ID', sql.Int, req.body.ID)
+      .input('IDModel', sql.Int, req.body.IDModel)
+      .input('IDHazineName', sql.Int, req.body.IDHazineName)
+      .input('Amount', sql.Float, req.body.Amount)
+      .input('AccountNo', sql.VarChar(15), req.body.AccountNo)
+      .input('EffectiveDate', sql.VarChar(10), req.body.EffectiveDate)
+      .input('ExpireDate', sql.VarChar(10), req.body.ExpireDate)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output('msgRet', sql.NVarChar(500))
+      .execute('Sale.sale.uspHazineCostUpdate')
+    if (result.output.msgRet != "") {
+      return {
+        statusResult: 1,
+        message: result.output.msgRet
+      };
+    }
+    return {
+      statusResult: 0,
+      message: "ویرایش اطلاعات  با موفقیت انجام شد",
+    };
+  } catch (err) {
+    console.log('err.message===>', err.message)
+    throw new Error('خطا در برقراری ارتباط با پایگاه داده ای')
+  }
+}
+async function hazinehCostDelete(req) {
+  try {
+    let UserLogin = req.privateData.UserLogin;
+    var clientIp = req.ip;
+
+    const { ID } = req.body;
+    const pool = await pools.getPool('Sale');
+    let result = await pool
+      .request()
+      .input('ID', sql.Int, ID)
+      .input('UserID', sql.VarChar(10), UserLogin)
+      .input("clientIp", sql.NVarChar(50), clientIp)
+      .output("msgRet", sql.NVarChar(200))
+      .execute('Sale.sale.uspHazineCostDelete');
+
+    if (result.output.msgRet == "" || result.output.msgRet == null)
+      return {
+        statusResult: 0,
+        message: "حذف اطلاعات با موفقیت انجام شد",
+
+      }
+      
+    else return {
+      statusResult: 1,
+      message: result.output.msgRet,
+    }
+  } catch (err) {
+    console.log("err.message", err.message)
+    return {
+      statusResult: 2,
+      message: "خطا در برقراری ارتباط با پایگاه داده ای",
+    };
+
+  }
+}
+
+////////////// کاربری های مرتبط
+
+async function getRelatBaseUsageWithModelList(req) {
+
+  try {
+
+    const { IDModel} = req.body.firstParams;
+    var query = SqlCommandCreator(req.body.lazyParams, "Sale.dbo.VRelatBaseUsageWithModel", "*", `IDModel =${IDModel} AND Flag = 1`);
+    let pool = await pools.getPool('Sale')
+    let result = await pool.request().query(query)
+
+    return {
+      statusResult: 0,
+      rows: result.recordsets[0],
+      totalRecords: result.recordsets[1][0].totalCount,
+    }
+  } catch (err) {
+    console.log("err.message", err.message)
+    throw (err)
+  }
+
+}
+
+// async function getRelatBaseUsageWithModelPickList(req) {
+
+//   try {
+
+//     const { IDModel} = req.body.firstParams;
+//     var query = SqlCommandCreator(req.body.lazyParams, "Sale.dbo.VBaseUsage", "*", `ID NOT IN ( SELECT IDBaseUsage FROM VRelatBaseUsageWithModel WHERE IDModel =${IDModel} AND Flag = 1`);
+//     let pool = await pools.getPool('Sale')
+//     let result = await pool.request().query(query)
+
+//     return {
+//       statusResult: 0,
+//       rows: result.recordsets[0],
+//       totalRecords: result.recordsets[1][0].totalCount,
+//     }
+//   } catch (err) {
+//     console.log("err.message", err.message)
+//     throw (err)
+//   }
+
+// }

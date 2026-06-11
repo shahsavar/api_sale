@@ -22,6 +22,12 @@ router.post('/getMarketList', auth ,getMarketList);
 router.post('/marketInsert', auth ,marketInsert);
 router.post('/marketUpdate', auth ,marketUpdate);
 router.post('/marketDelete', auth ,marketDelete);
+router.post('/getHazinehCostList', auth ,getHazinehCostList);
+router.post('/hazinehCostInsert', auth ,hazinehCostInsert);
+router.post('/hazinehCostUpdate', auth ,hazinehCostUpdate);
+router.post('/hazinehCostDelete', auth ,hazinehCostDelete);
+router.post('/getRelatBaseUsageWithModelList', auth ,getRelatBaseUsageWithModelList);
+
 
 
 module.exports = router;
@@ -143,4 +149,37 @@ function marketDelete(req, res, next) {
     .catch(err => next(err));
     
 }
+function getHazinehCostList(req, res, next) {
+    myService.getHazinehCostList(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
 
+function hazinehCostInsert(req, res, next) {
+    myService.hazinehCostInsert(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+function hazinehCostUpdate(req, res, next) {
+    myService.hazinehCostUpdate(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+function hazinehCostDelete(req, res, next) {
+    myService.hazinehCostDelete(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+
+function getRelatBaseUsageWithModelList(req, res, next) {
+    myService.getRelatBaseUsageWithModelList(req,res.next)
+    .then(data => res.json(data))
+    .catch(err => next(err));
+    
+}
+
+ 
